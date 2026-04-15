@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#000000">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="description" content="DeerDays — La app universitaria con horarios, foros anónimos y opiniones de profesores.">
+  <title>DeerDays — Tu vida universitaria, organizada</title>
+  <link rel="icon" type="image/png" href="DeerDaysLogo3.png">
+  <link rel="apple-touch-icon" href="DeerDaysLogo3.png">
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #000000;
+      --surface: #0e0e0e;
+      --surface-2: #161616;
+      --surface-3: #1c1c1c;
+      --border: #202020;
+      --border-strong: #2a2a2a;
+      --text: #ffffff;
+      --text-2: #d4d4d4;
+      --muted: #7a7a7a;
+      --accent: #d4b079;
+      --accent-dim: rgba(212, 176, 121, 0.12);
+      --accent-border: rgba(212, 176, 121, 0.22);
+      --android: #34d27a;
+      --android-hover: #2bc46e;
+      --radius: 20px;
+      --radius-md: 16px;
+      --radius-sm: 12px;
+      --gutter: 22px;
+      --max: 460px;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Helvetica, Arial, sans-serif;
+      font-size: 16px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+      text-rendering: optimizeLegibility;
+    }
+
+    button, a {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* ── HERO ─────────────────────── */
+    .hero {
+      min-height: 100svh;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: calc(env(safe-area-inset-top, 0px) + 40px) var(--gutter) 80px;
+      position: relative;
+      isolation: isolate;
+    }
+
+    /* Subtle radial glow behind logo */
+    .hero::before {
+      content: "";
+      position: absolute;
+      top: 14%;
+      left: 50%;
+      width: 380px;
+      height: 380px;
+      transform: translateX(-50%);
+      background: radial-gradient(closest-side, rgba(212, 176, 121, 0.14), transparent 70%);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .logo-wrap {
+      width: 108px;
+      height: 108px;
+      margin-bottom: 28px;
+      animation: fadeUp 0.7s ease-out both;
+    }
+
+    .logo-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+      filter: drop-shadow(0 10px 32px rgba(212, 176, 121, 0.22));
+    }
+
+    .hero h1 {
+      font-size: 56px;
+      font-weight: 800;
+      letter-spacing: -2.8px;
+      line-height: 0.98;
+      margin-bottom: 14px;
+      animation: fadeUp 0.75s 0.06s ease-out both;
+    }
+
+    .tagline {
+      color: var(--accent);
+      font-size: 16px;
+      font-weight: 500;
+      letter-spacing: -0.1px;
+      margin-bottom: 16px;
+      animation: fadeUp 0.75s 0.12s ease-out both;
+    }
+
+    .hero-desc {
+      color: var(--muted);
+      font-size: 15.5px;
+      line-height: 1.65;
+      max-width: 320px;
+      margin-bottom: 44px;
+      animation: fadeUp 0.75s 0.18s ease-out both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── DOWNLOAD BUTTONS ─────────── */
+    .btns {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      width: 100%;
+      max-width: 340px;
+      animation: fadeUp 0.75s 0.24s ease-out both;
+    }
+
+    .btn {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 22px;
+      border-radius: 16px;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      width: 100%;
+      min-height: 62px;
+      transition: transform 0.15s ease, box-shadow 0.2s ease, background 0.2s ease;
+      user-select: none;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn:active {
+      transform: scale(0.97);
+    }
+
+    .btn-android {
+      background: var(--android);
+      color: #001a0c;
+      box-shadow: 0 8px 24px -8px rgba(52, 210, 122, 0.5);
+    }
+
+    .btn-android:hover {
+      background: var(--android-hover);
+    }
+
+    .btn-ios {
+      background: #f5f5f7;
+      color: #000;
+      box-shadow: 0 8px 24px -8px rgba(255, 255, 255, 0.12);
+    }
+
+    .btn-ios:hover {
+      background: #ffffff;
+    }
+
+    .btn-icon {
+      width: 30px;
+      height: 30px;
+      flex-shrink: 0;
+    }
+
+    .btn-label {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      flex: 1;
+      line-height: 1;
+    }
+
+    .btn-sub {
+      font-size: 10.5px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.7px;
+      opacity: 0.72;
+      margin-bottom: 4px;
+    }
+
+    .btn-main {
+      font-size: 19px;
+      font-weight: 700;
+      letter-spacing: -0.4px;
+    }
+
+    /* Scroll arrow */
+    .scroll-hint {
+      position: absolute;
+      bottom: calc(env(safe-area-inset-bottom, 0px) + 22px);
+      left: 50%;
+      transform: translateX(-50%);
+      color: var(--muted);
+      line-height: 1;
+      animation: bob 2.6s ease-in-out infinite;
+    }
+
+    .scroll-hint svg {
+      width: 20px;
+      height: 20px;
+      opacity: 0.55;
+    }
+
+    @keyframes bob {
+      0%, 100% { transform: translateX(-50%) translateY(0); opacity: .35; }
+      55%      { transform: translateX(-50%) translateY(6px); opacity: .8; }
+    }
+
+    /* ── SECTIONS ──────────────────── */
+    .section {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 72px var(--gutter);
+    }
+
+    .section + .section {
+      padding-top: 0;
+    }
+
+    .section-eyebrow {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.6px;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+
+    .section-title {
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: -0.8px;
+      line-height: 1.15;
+      margin-bottom: 28px;
+    }
+
+    /* ── FEATURES ─────────────────── */
+    .feature-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .feature-card {
+      background: linear-gradient(180deg, var(--surface) 0%, #0a0a0a 100%);
+      border-radius: var(--radius-md);
+      padding: 18px 18px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      border: 1px solid var(--border);
+      transition: border-color 0.2s ease, transform 0.2s ease;
+    }
+
+    .feature-card:hover {
+      border-color: var(--border-strong);
+      transform: translateY(-1px);
+    }
+
+    .feature-icon {
+      width: 46px;
+      height: 46px;
+      flex-shrink: 0;
+      background: var(--accent-dim);
+      border: 1px solid var(--accent-border);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent);
+    }
+
+    .feature-icon svg {
+      width: 22px;
+      height: 22px;
+      stroke-width: 1.7;
+    }
+
+    .feature-text h3 {
+      font-size: 15.5px;
+      font-weight: 600;
+      letter-spacing: -0.2px;
+      margin-bottom: 4px;
+      color: var(--text);
+    }
+
+    .feature-text p {
+      font-size: 13.5px;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    /* ── ABOUT ────────────────────── */
+    .about {
+      padding: 8px var(--gutter) 72px;
+      max-width: var(--max);
+      margin: 0 auto;
+    }
+
+    .about-card {
+      background:
+        radial-gradient(circle at 0% 0%, rgba(212, 176, 121, 0.08), transparent 60%),
+        linear-gradient(180deg, var(--surface-2) 0%, var(--surface) 100%);
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius);
+      padding: 30px 24px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .quote-mark {
+      color: var(--accent);
+      font-size: 38px;
+      line-height: 1;
+      font-family: Georgia, serif;
+      opacity: 0.55;
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .about-card p {
+      color: var(--text-2);
+      font-size: 15px;
+      line-height: 1.72;
+    }
+
+    .about-card strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .about-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: var(--surface-3);
+      border: 1px solid var(--border-strong);
+      border-radius: 100px;
+      padding: 6px 14px;
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 20px;
+      letter-spacing: 0.2px;
+    }
+
+    .about-badge::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 8px var(--accent);
+    }
+
+    /* ── FOOTER ───────────────────── */
+    footer {
+      padding: 30px var(--gutter) calc(34px + env(safe-area-inset-bottom, 0px));
+      max-width: var(--max);
+      margin: 0 auto;
+      text-align: center;
+      border-top: 1px solid var(--border);
+    }
+
+    footer p {
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing: 0.3px;
+    }
+
+    /* ── TOAST ────────────────────── */
+    .toast {
+      position: fixed;
+      bottom: calc(28px + env(safe-area-inset-bottom, 0px));
+      left: 50%;
+      transform: translateX(-50%) translateY(14px);
+      background: #181818;
+      color: var(--text);
+      padding: 12px 22px;
+      border-radius: 100px;
+      font-size: 14px;
+      font-weight: 500;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 999;
+      border: 1px solid var(--border-strong);
+      transition: opacity 0.28s ease, transform 0.28s ease;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* ── SMALL SCREEN TWEAKS ─────── */
+    @media (max-width: 360px) {
+      .hero h1 { font-size: 46px; letter-spacing: -2.2px; }
+      .section-title { font-size: 24px; }
+    }
+
+    /* ── REDUCED MOTION ──────────── */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── HERO ───────────────────────────── -->
+  <section class="hero">
+    <div class="logo-wrap">
+      <img src="DeerDaysLogo3.png" alt="DeerDays logo">
+    </div>
+    <h1>DeerDays</h1>
+    <p class="tagline">Tu vida universitaria, organizada.</p>
+    <p class="hero-desc">Horarios, foros anónimos y opiniones de profesores. Todo en un solo lugar, solo para tu universidad.</p>
+
+    <div class="btns">
+
+      <!-- Android — descarga directa del APK local -->
+      <a
+        href="https://drive.usercontent.google.com/download?id=1F_WH-EsGZdWSbvABb5l5kYrjsZ_oGwoF&export=download&confirm=t"
+        class="btn btn-android"
+        id="btn-android"
+      >
+        <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M17.6 9.48l1.84-3.18a.5.5 0 0 0-.87-.5l-1.86 3.22a11.43 11.43 0 0 0-9.42 0L5.43 5.8a.5.5 0 0 0-.87.5L6.4 9.48A10.8 10.8 0 0 0 1 18h22a10.81 10.81 0 0 0-5.4-8.52zM7 15.25a1.25 1.25 0 1 1 1.25-1.25A1.25 1.25 0 0 1 7 15.25zm10 0A1.25 1.25 0 1 1 18.25 14 1.25 1.25 0 0 1 17 15.25z"/>
+        </svg>
+        <span class="btn-label">
+          <span class="btn-sub">Descargar para</span>
+          <span class="btn-main">Android</span>
+        </span>
+      </a>
+
+      <!-- iOS — placeholder activo -->
+      <a
+        href="#testflight-soon"
+        class="btn btn-ios"
+        id="btn-ios"
+      >
+        <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+        </svg>
+        <span class="btn-label">
+          <span class="btn-sub">Disponible en</span>
+          <span class="btn-main">iOS</span>
+        </span>
+      </a>
+
+    </div>
+
+    <div class="scroll-hint" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="6 9 12 15 18 9"/>
+      </svg>
+    </div>
+  </section>
+
+  <!-- ── FEATURES ───────────────────────── -->
+  <section class="section">
+    <span class="section-eyebrow">Funcionalidades</span>
+    <h2 class="section-title">Todo lo que necesitas para tu día a día en la uni.</h2>
+    <div class="feature-list">
+
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="4.5" width="18" height="17" rx="2.2"/>
+            <path d="M3 9.5h18"/>
+            <path d="M8 2.5v4"/>
+            <path d="M16 2.5v4"/>
+            <path d="M8 13.5h2"/>
+            <path d="M14 13.5h2"/>
+            <path d="M8 17.5h2"/>
+            <path d="M14 17.5h2"/>
+          </svg>
+        </div>
+        <div class="feature-text">
+          <h3>Horario visual</h3>
+          <p>Crea y edita tu horario semanal de forma visual. Sin papel, sin Excel.</p>
+        </div>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+            <circle cx="8.5" cy="11.5" r="0.8" fill="currentColor"/>
+            <circle cx="12" cy="11.5" r="0.8" fill="currentColor"/>
+            <circle cx="15.5" cy="11.5" r="0.8" fill="currentColor"/>
+          </svg>
+        </div>
+        <div class="feature-text">
+          <h3>Foros anónimos</h3>
+          <p>Debates, dudas y noticias con total anonimato dentro de tu universidad.</p>
+        </div>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polygon points="12 2.5 14.9 8.6 21.5 9.5 16.7 14 17.9 20.7 12 17.5 6.1 20.7 7.3 14 2.5 9.5 9.1 8.6 12 2.5"/>
+          </svg>
+        </div>
+        <div class="feature-text">
+          <h3>Opiniones reales</h3>
+          <p>Lee y comparte valoraciones de asignaturas y profesores de tu facultad.</p>
+        </div>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M22 10 12 5 2 10l10 5 10-5z"/>
+            <path d="M6 12v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5"/>
+            <path d="M22 10v6"/>
+          </svg>
+        </div>
+        <div class="feature-text">
+          <h3>Solo tu universidad</h3>
+          <p>Acceso exclusivo con email universitario verificado. Tu comunidad, sin ruido exterior.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── ABOUT ──────────────────────────── -->
+  <section class="about">
+    <div class="about-card">
+      <span class="quote-mark">&ldquo;</span>
+      <p>Inspirada en <strong>Everytime</strong>, la app universitaria con más de <strong>7 millones de usuarios</strong> en Corea del Sur. Misma idea, pensada para las universidades españolas.</p>
+      <span class="about-badge">Hecho en España · 2026</span>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ─────────────────────────── -->
+  <footer>
+    <p>DeerDays &nbsp;·&nbsp; Todos los derechos reservados</p>
+  </footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    function showToast(msg) {
+      var t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      clearTimeout(window.__toastTimer);
+      window.__toastTimer = setTimeout(function () {
+        t.classList.remove('show');
+      }, 3000);
+    }
+
+    // iOS — placeholder
+    document.getElementById('btn-ios').addEventListener('click', function (e) {
+      e.preventDefault();
+      showToast('Enlace de TestFlight disponible pronto');
+    });
+
+    // Android — confirm download started
+    document.getElementById('btn-android').addEventListener('click', function () {
+      setTimeout(function () {
+        showToast('Descarga iniciada…');
+      }, 350);
+    });
+  </script>
+
+</body>
+</html>
